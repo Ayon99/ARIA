@@ -4,9 +4,19 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-engine = create_engine(os.getenv("DATABASE_URL"))
+database_url = os.getenv("DATABASE_URL")
+if not database_url:
+    raise ValueError("DATABASE_URL not set in environment")
+
+# Add pool settings for PostgreSQL
+engine = create_engine(
+    database_url,
+    pool_pre_ping=True,
+    pool_recycle=3600
+)
 
 def init_db():
+    """Create tables on startup"""
     with engine.connect() as conn:
         conn.execute(text("""
             CREATE TABLE IF NOT EXISTS incidents (
@@ -25,7 +35,7 @@ def init_db():
             )
         """))
         conn.commit()
-    print("Database ready")
+    print("✅ Database initialized")
 
 def save_incident(anomaly, result):
     import json
@@ -57,7 +67,12 @@ def save_incident(anomaly, result):
 def get_all_incidents():
     with engine.connect() as conn:
         result = conn.execute(text("""
-            SELECT * FROM incidents ORDER BY created_at DESC
+            SELECT id, event_id, user_id, attack_type, mitre_technique,
+                   severity, confidence, attack_pattern, is_false_positive,
+                   report, anomaly_json, created_at
+            FROM incidents 
+            ORDER BY created_at DESC 
+            LIMIT 100
         """))
         rows = result.fetchall()
         return [dict(row._mapping) for row in rows]
