@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: aria-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port 8000
+    envVars:
+      - key: postgresql://neondb_owner:npg_S9TAtcY3JvoW@ep-aged-haze-aqmczmoo-pooler.c-8.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+        sync: false
+      - key: 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
+        sync: false
+
+  - type: static
+    name: aria-dashboard
+    staticPublishPath: dashboard/build
+    buildCommand: cd dashboard && npm install && npm run build
