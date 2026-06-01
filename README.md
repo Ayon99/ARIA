@@ -262,9 +262,9 @@ Dashboard can run locally while backend is on Render. Update `REACT_APP_API_URL`
 - [ ] **Phase 2**: Integrate Isolation Forest detection to auto-flag anomalies (no more simulation)
 - [ ] **Phase 2**: RAG + pgvector for smarter MITRE ATT&CK lookups
 - [ ] **Phase 3**: Real log ingestion (Supabase, Auth0, Firebase integration)
-- [ ]            : Multi-tenancy support for multiple organizations
-- [ ]            : Slack/email alerts for critical incidents
-- [ ]            : Custom rule engine for organization-specific detection
+- [ ] **       **: Multi-tenancy support for multiple organizations
+- [ ] **       **: Slack/email alerts for critical incidents
+- [ ] **       **: Custom rule engine for organization-specific detection
 - [ ] **Phase 4**: Stripe billing integration for SaaS pricing
 
 ---
